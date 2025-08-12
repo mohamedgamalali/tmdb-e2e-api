@@ -7,13 +7,13 @@ WORKDIR /usr/src/app
 # Install dumb-init for proper signal handling
 RUN apk add --no-cache dumb-init
 
-# Copy package files
+# Copy package files first
 COPY package.json yarn.lock ./
 
 # Install all dependencies (including dev dependencies)
 RUN yarn install --frozen-lockfile && yarn cache clean
 
-# Copy source code
+# Copy source code after dependencies are installed
 COPY . .
 
 # Create non-root user (but keep permissions flexible for development)

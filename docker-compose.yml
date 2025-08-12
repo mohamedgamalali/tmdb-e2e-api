@@ -22,7 +22,7 @@ services:
         condition: service_healthy
     volumes:
       - .:/usr/src/app
-      - /usr/src/app/node_modules
+      - node_modules_volume:/usr/src/app/node_modules
     networks:
       - tmdb-network
     restart: unless-stopped
@@ -32,7 +32,7 @@ services:
     container_name: tmdb-postgres
     restart: unless-stopped
     ports:
-      - "${DB_PORT:-5432}:5432"
+      - "${DATABASE_PORT:-5432}:5432"
     environment:
       POSTGRES_DB: ${DATABASE_NAME:-tmdb_db}
       POSTGRES_USER: ${DATABASE_USER:-tmdb_user}
@@ -51,6 +51,8 @@ volumes:
   postgres_data:
     driver: local
   pgadmin_data:
+    driver: local
+  node_modules_volume:
     driver: local
 
 networks:
