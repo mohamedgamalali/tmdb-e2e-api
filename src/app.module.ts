@@ -5,9 +5,9 @@ import { MoviesModule } from './movies/movies.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import dataSource from 'db/db-source';
-import { ConfigValidationSchema } from 'config/validation';
+import { ConfigValidationSchema } from 'src/config/validation';
 import { DataSource } from 'typeorm';
-import { LoggerMiddleware } from 'common/logger.middleware';
+import { LoggerMiddleware } from 'src/common/logger.middleware';
 import { GenresModule } from './genres/genres.module';
 import { TmdbModule } from './tmdb/tmdb.module';
 
