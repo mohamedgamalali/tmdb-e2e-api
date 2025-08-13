@@ -14,6 +14,13 @@ export interface TmdbMovie {
   genre_ids?: number[];
 }
 
+export interface TmdbMovieList {
+  page: number;
+  results: TmdbMovie[];
+  total_pages: number;
+  total_results: number;
+}
+
 export interface TmdbPaged<T> {
   page: number;
   total_pages: number;
