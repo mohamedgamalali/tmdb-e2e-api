@@ -5,16 +5,16 @@ export class Genre {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'int', unique: true })
-  tmdbId: number;
+  @Column({ type: 'varchar', unique: true, nullable: false })
+  tmdb_id: string;
 
   @Index({ unique: true })
   @Column('varchar', { nullable: false, unique: true })
   name: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updated_at: Date;
 }
