@@ -5,23 +5,42 @@ import { MoviesService } from './movies.service';
 import { Movie } from './movies.entity';
 import { GetMoviesDto } from './dto/get-movies.dto';
 import { createRepoMock, createMockMovie, createMockGenre, createQueryBuilderMock } from '../../test/utils/db-mock';
+import { MovieRating } from './MovieRating.entity';
+import { WatchList } from './WatchList.entity';
 
 describe('MoviesService', () => {
   let service: MoviesService;
   let repository: jest.Mocked<Repository<Movie>>;
   let queryBuilder: any;
+  let mockRatingRepo: any;
+  let mockMovieRepo: any;
+  let mockWatchListRepo: any;
 
   beforeEach(async () => {
-    const mockRepo = createRepoMock();
+    mockMovieRepo = createRepoMock();
     queryBuilder = createQueryBuilderMock();
-    mockRepo.createQueryBuilder = jest.fn().mockReturnValue(queryBuilder);
+    mockMovieRepo.createQueryBuilder = jest.fn().mockReturnValue(queryBuilder);
+
+    mockRatingRepo = createRepoMock();
+    mockRatingRepo.createQueryBuilder = jest.fn().mockReturnValue(createQueryBuilderMock());
+
+    mockWatchListRepo = createRepoMock();
+    mockWatchListRepo.createQueryBuilder = jest.fn().mockReturnValue(createQueryBuilderMock());
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         MoviesService,
         {
           provide: getRepositoryToken(Movie),
-          useValue: mockRepo,
+          useValue: mockMovieRepo,
+        },
+        {
+          provide: getRepositoryToken(MovieRating),
+          useValue: mockRatingRepo,
+        },
+        {
+          provide: getRepositoryToken(WatchList),
+          useValue: mockWatchListRepo,
         },
       ],
     }).compile();
@@ -282,7 +301,8 @@ describe('MoviesService', () => {
       const { movieGenres, ...expectedMovieData } = mockMovies[0];
       expect(result.data).toEqual([{
         ...expectedMovieData,
-        genres: [{ id: mockGenre.id, name: mockGenre.name }]
+        genres: [{ id: mockGenre.id, name: mockGenre.name }],
+        average_internal_rating: 0
       }]);
       expect(result.meta.page).toBe(2);
       expect(result.meta.limit).toBe(5);
@@ -298,12 +318,40 @@ describe('MoviesService', () => {
 
       // Verify the query builder chain was called in the correct order
       expect(repository.createQueryBuilder).toHaveBeenCalledWith('movie');
-      expect(queryBuilder.leftJoinAndSelect).toHaveBeenCalledTimes(2);
+      expect(queryBuilder.leftJoinAndSelect).toHaveBeenCalledTimes(3); //2 for movieGenres and 1 for movieRatings
       expect(queryBuilder.andWhere).toHaveBeenCalledTimes(2);
       expect(queryBuilder.orderBy).toHaveBeenCalledTimes(1);
       expect(queryBuilder.skip).toHaveBeenCalledTimes(1);
       expect(queryBuilder.take).toHaveBeenCalledTimes(1);
       expect(queryBuilder.getManyAndCount).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('rateMovie', () => {
+    it('should rate a movie', async () => {
+      const mockMovie = createMockMovie({ movieGenres: [] });
+      mockMovieRepo.findOne.mockResolvedValue(mockMovie);
+      await service.rateMovie({ movieId: mockMovie.id, userId: 'user-1', rating: 5 });
+
+      expect(mockMovieRepo.findOne).toHaveBeenCalledWith({ where: { id: mockMovie.id }});
+      expect(mockRatingRepo.upsert).toHaveBeenCalledWith({ movie_id: mockMovie.id, user_id: 'user-1', rating: 5 }, { conflictPaths: ['movie_id', 'user_id'] });
+    });
+
+    it('should throw an error if the movie is not found', async () => {
+      mockMovieRepo.findOne.mockResolvedValue(null);
+      await expect(service.rateMovie({ movieId: 'non-existent-id', userId: 'user-1', rating: 5 })).rejects.toThrow('Movie not found');
+    });
+  });
+
+  describe('watchList', () => {
+    it('should add a movie to the watch list', async () => {
+      const mockMovie = createMockMovie({ movieGenres: [] });
+      mockMovieRepo.findOne.mockResolvedValue(mockMovie);
+      await service.addToWatchList({ movieId: mockMovie.id, userId: 'user-1' });
+
+      expect(mockMovieRepo.findOne).toHaveBeenCalledWith({ where: { id: mockMovie.id }});
+      expect(mockWatchListRepo.create).toHaveBeenCalledWith({ movie_id: mockMovie.id, user_id: 'user-1' });
+      expect(mockWatchListRepo.save).toHaveBeenCalledTimes(1);
     });
   });
 });

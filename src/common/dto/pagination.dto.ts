@@ -36,7 +36,7 @@ export class PaginationDto {
   limit?: number = 10;
 
   @ApiProperty({
-    description: 'Search query for genres name',
+    description: 'Search query for record name',
     required: false,
   })
   @IsOptional()

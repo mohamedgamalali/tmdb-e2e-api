@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, Index, UpdateDateColumn, OneToMany, JoinColumn } from 'typeorm';
 import { MovieGenre } from './MovieGenre.entity';
 import { Genre } from '../genres/genre.entity';
+import { MovieRating } from './MovieRating.entity';
 
 @Entity()
 export class Movie {
@@ -43,6 +44,9 @@ export class Movie {
 
   @OneToMany(() => MovieGenre, movieGenre => movieGenre.movie)
   movieGenres: MovieGenre[];
+
+  @OneToMany(() => MovieRating, movieRating => movieRating.movie)
+  movieRatings: MovieRating[];
 
   // Virtual property to get genres directly
   genres?: Genre[];
