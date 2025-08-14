@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Transform } from "class-transformer";
 import { IsArray, IsOptional, IsUUID } from "class-validator";
 import { PaginationDto } from "src/common/dto";
 
@@ -9,6 +10,12 @@ export class GetMoviesDto extends PaginationDto {
         required: false,
     })
     @IsOptional()
+    @Transform(({ value }) => {
+        if (typeof value === 'string') {
+            return [value];
+        }
+        return value;
+    })
     @IsArray()
     @IsUUID(4, { each: true })
     genreIds?: string[];

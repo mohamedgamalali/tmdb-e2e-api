@@ -124,5 +124,54 @@ describe('AppController (e2e)', () => {
         movie.genres.forEach(genre => expect(genre.name).toBeDefined());
       }
     });
+
+    it('should rate a movie', async () => {
+      const testMovieTitle = 'Murder Company';
+      const testMovie = await dataSource.getRepository('movie').findOne({ where: { title: testMovieTitle } });
+      expect(testMovie).toBeDefined();
+      const res = await request(app.getHttpServer())
+        .post(`${GLOBAL_PATH}/rate`)
+        .send({ movieId: testMovie?.id, userId: '1', rating: 5 })
+        .expect(201);
+      expect(res.body.message).toBe('Movie rated successfully');
+
+      //should reflect in average rating when get movies
+      const moviesRes = await request(app.getHttpServer())
+        .get(`${GLOBAL_PATH}?page=1&limit=${PAGE_SIZE}&search=${testMovieTitle}`)
+        .expect(200);
+      expect(moviesRes.body.data[0].average_internal_rating).toBe(5);
+    });
+  });
+
+  describe('watchlist', () => {
+    let GLOBAL_PATH = '/movies/watchlist';
+    const PAGE_SIZE = 10;
+    const testUserId = '1';
+    const testMovieTitle = 'Murder Company';
+
+    it('should add a movie to watch list', async () => {
+      const testMovie = await dataSource.getRepository('movie').findOne({ where: { title: testMovieTitle } });
+      expect(testMovie).toBeDefined();
+      const res = await request(app.getHttpServer())
+        .post(`${GLOBAL_PATH}`)
+        .send({ movieId: testMovie?.id, userId: testUserId })
+        .expect(201);
+      expect(res.body.message).toBe('Movie added to watch list successfully');
+      const userWatchList = await dataSource.getRepository('watch_list').find({ where: { user_id: testUserId } });
+      expect(userWatchList).toBeDefined();
+      expect(userWatchList.length).toBe(1);
+      expect(userWatchList[0].movie_id).toBe(testMovie?.id);
+      expect(userWatchList[0].user_id).toBe(testUserId);
+    });
+
+    it('should get watch list', async () => {
+      const testMovie = await dataSource.getRepository('movie').findOne({ where: { title: testMovieTitle } });
+      expect(testMovie).toBeDefined();
+      const res = await request(app.getHttpServer())
+        .get(`${GLOBAL_PATH}?page=1&limit=${PAGE_SIZE}&userId=${testUserId}`)
+        .expect(200);
+      expect(res.body.data).toHaveLength(1);
+      expect(res.body.data[0].movie_id).toBe(testMovie?.id);
+    });
   });
 });
