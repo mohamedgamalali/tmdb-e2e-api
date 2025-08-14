@@ -3,6 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { SyncGenresService } from 'src/sync/sync.genres.service';
 import { SyncMoviesService } from 'src/sync/sync.movies.service';
 import { Genre } from 'src/genres/genre.entity';
+import { writeFile } from 'fs/promises';
 @Injectable()
 export class DataSeedService {
   @Inject(SyncGenresService)
@@ -25,6 +26,15 @@ export class DataSeedService {
       console.log('✅ Created movies:', movies);
 
       console.log('✅ Seed data generated successfully');
+
+      // const allMovies = await this.dataSource.getRepository('movie').find();
+      // await writeFile('allMovies.json', JSON.stringify(allMovies, null, 2));
+      // const allGenres = await this.dataSource.getRepository('genre').find();
+      // await writeFile('allGenres.json', JSON.stringify(allGenres, null, 2));
+
+      // const allMovieGenres = await this.dataSource.getRepository('movie_genres').find();
+      // await writeFile('allMovieGenres.json', JSON.stringify(allMovieGenres, null, 2));
+
     } catch (error) {
       console.error('❌ Error seeding data:', error);
       throw error;
