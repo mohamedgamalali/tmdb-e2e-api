@@ -46,9 +46,31 @@ services:
       retries: 5
     networks:
       - tmdb-network
+  
+  postgres-test:
+    image: postgres:15-alpine
+    container_name: tmdb-postgres-test
+    restart: unless-stopped
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: tmdb_db_test
+      POSTGRES_USER: tmdb_user_test
+      POSTGRES_PASSWORD: tmdb_password_test
+    volumes:
+      - postgres_data_test:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tmdb_user_test -d tmdb_db_test"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - tmdb-network
 
 volumes:
   postgres_data:
+    driver: local
+  postgres_data_test:
     driver: local
   pgadmin_data:
     driver: local

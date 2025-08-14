@@ -1,0 +1,135 @@
+[
+  {
+    "id": "51ea606c-a61e-4cab-be0d-ed7a74ea0c7e",
+    "tmdb_id": "28",
+    "name": "Action",
+    "created_at": "2025-08-12T23:17:06.701Z",
+    "updated_at": "2025-08-13T23:27:18.669Z"
+  },
+  {
+    "id": "12c24c69-cd51-43f1-89b3-ee90ff665152",
+    "tmdb_id": "12",
+    "name": "Adventure",
+    "created_at": "2025-08-12T23:17:06.701Z",
+    "updated_at": "2025-08-13T23:27:18.669Z"
+  },
+  {
+    "id": "872d5d50-9538-4603-9b62-0735aae10f67",
+    "tmdb_id": "16",
+    "name": "Animation",
+    "created_at": "2025-08-12T23:17:06.701Z",
+    "updated_at": "2025-08-13T23:27:18.669Z"
+  },
+  {
+    "id": "bd513a0a-30de-49eb-bbe0-cfde7ca1ce06",
+    "tmdb_id": "35",
+    "name": "Comedy",
+    "created_at": "2025-08-12T23:17:06.701Z",
+    "updated_at": "2025-08-13T23:27:18.669Z"
+  },
+  {
+    "id": "51d04e06-745f-4804-abaa-6b4f6fbfb06a",
+    "tmdb_id": "80",
+    "name": "Crime",
+    "created_at": "2025-08-12T23:17:06.701Z",
+    "updated_at": "2025-08-13T23:27:18.669Z"
+  },
+  {
+    "id": "94257ac8-fef8-4b48-ac89-3c357831de76",
+    "tmdb_id": "99",
+    "name": "Documentary",
+    "created_at": "2025-08-12T23:17:06.701Z",
+    "updated_at": "2025-08-13T23:27:18.669Z"
+  },
+  {
+    "id": "c52f21e1-8f90-4379-a01d-be37218537b7",
+    "tmdb_id": "18",
+    "name": "Drama",
+    "created_at": "2025-08-12T23:17:06.701Z",
+    "updated_at": "2025-08-13T23:27:18.669Z"
+  },
+  {
+    "id": "8ed21a2b-ba5b-4759-9736-052862865db3",
+    "tmdb_id": "10751",
+    "name": "Family",
+    "created_at": "2025-08-12T23:17:06.701Z",
+    "updated_at": "2025-08-13T23:27:18.669Z"
+  },
+  {
+    "id": "e2a43837-15b4-4359-bd65-1168626f6e7b",
+    "tmdb_id": "14",
+    "name": "Fantasy",
+    "created_at": "2025-08-12T23:17:06.701Z",
+    "updated_at": "2025-08-13T23:27:18.669Z"
+  },
+  {
+    "id": "a1947730-706e-455b-b3ed-bfc6bfbe3789",
+    "tmdb_id": "36",
+    "name": "History",
+    "created_at": "2025-08-12T23:17:06.701Z",
+    "updated_at": "2025-08-13T23:27:18.669Z"
+  },
+  {
+    "id": "6870bc6f-1232-4fab-bf6c-85116ab0c28b",
+    "tmdb_id": "27",
+    "name": "Horror",
+    "created_at": "2025-08-12T23:17:06.701Z",
+    "updated_at": "2025-08-13T23:27:18.669Z"
+  },
+  {
+    "id": "f3bfedd0-5adf-4a2f-98db-a40db022d196",
+    "tmdb_id": "10402",
+    "name": "Music",
+    "created_at": "2025-08-12T23:17:06.701Z",
+    "updated_at": "2025-08-13T23:27:18.669Z"
+  },
+  {
+    "id": "5f36552c-472f-4ce6-b920-6290c70a6504",
+    "tmdb_id": "9648",
+    "name": "Mystery",
+    "created_at": "2025-08-12T23:17:06.701Z",
+    "updated_at": "2025-08-13T23:27:18.669Z"
+  },
+  {
+    "id": "600a6d2f-3455-475b-b95a-17f16a4f4437",
+    "tmdb_id": "10749",
+    "name": "Romance",
+    "created_at": "2025-08-12T23:17:06.701Z",
+    "updated_at": "2025-08-13T23:27:18.669Z"
+  },
+  {
+    "id": "9328bbb9-744d-409f-8332-2a872232d94c",
+    "tmdb_id": "878",
+    "name": "Science Fiction",
+    "created_at": "2025-08-12T23:17:06.701Z",
+    "updated_at": "2025-08-13T23:27:18.669Z"
+  },
+  {
+    "id": "33e5fb1a-9334-4087-ac0c-af6541352f52",
+    "tmdb_id": "10770",
+    "name": "TV Movie",
+    "created_at": "2025-08-12T23:17:06.701Z",
+    "updated_at": "2025-08-13T23:27:18.669Z"
+  },
+  {
+    "id": "52740a2d-c7c9-43c9-949a-2527cc834dfd",
+    "tmdb_id": "53",
+    "name": "Thriller",
+    "created_at": "2025-08-12T23:17:06.701Z",
+    "updated_at": "2025-08-13T23:27:18.669Z"
+  },
+  {
+    "id": "81dd3b4b-a285-4268-b717-4d2aae845d6d",
+    "tmdb_id": "10752",
+    "name": "War",
+    "created_at": "2025-08-12T23:17:06.701Z",
+    "updated_at": "2025-08-13T23:27:18.669Z"
+  },
+  {
+    "id": "69ca5862-a80d-44f7-b4a2-8e8b887e28c2",
+    "tmdb_id": "37",
+    "name": "Western",
+    "created_at": "2025-08-12T23:17:06.701Z",
+    "updated_at": "2025-08-13T23:27:18.669Z"
+  }
+]

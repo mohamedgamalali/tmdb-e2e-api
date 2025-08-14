@@ -18,7 +18,7 @@ export class GenresService {
       limit = 10,
       search,
       sortBy = 'created_at', 
-      sortOrder = 'asc'
+      sortOrder = 'desc'
     } = queryDto;
     
     const queryBuilder = this.genreRepository.createQueryBuilder('genre');
