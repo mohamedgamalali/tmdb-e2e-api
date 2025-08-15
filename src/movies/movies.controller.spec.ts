@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MoviesController } from './movies.controller';
 import { MoviesService } from './movies.service';
+import { CacheService } from 'src/common/cache/cache.service';
+import { mockedCacheService } from 'test/utils/redis-mock';
 
 describe('MoviesController', () => {
   let controller: MoviesController;
@@ -18,6 +20,10 @@ describe('MoviesController', () => {
           provide: MoviesService,
           useValue: mockMoviesService,
         },
+        {
+          provide: CacheService,
+          useValue: mockedCacheService,
+        }
       ],
     }).compile();
 

@@ -6,6 +6,8 @@ import { Movie } from '../../src/movies/movies.entity';
 import { Genre } from '../../src/genres/genre.entity';
 import { MovieGenre } from '../../src/movies/MovieGenre.entity';
 import { TmdbMoviesApi } from '../../src/tmdb/resources/movies.api';
+import { mockedCacheService } from 'test/utils/redis-mock';
+import { CacheService } from 'src/common/cache/cache.service';
 
 function createRepoMock() {
     const qb: any = {
@@ -44,6 +46,10 @@ describe('SyncMoviesService', () => {
         { provide: getRepositoryToken(Movie), useValue: createRepoMock() },
         { provide: getRepositoryToken(Genre), useValue: createRepoMock() },
         { provide: getRepositoryToken(MovieGenre), useValue: createRepoMock() },
+        {
+          provide: CacheService,
+          useValue: mockedCacheService,
+        }
       ],
     }).compile();
 

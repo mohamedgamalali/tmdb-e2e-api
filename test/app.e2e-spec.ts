@@ -5,11 +5,17 @@ import { App } from 'supertest/types';
 import { AppModule } from './../src/app.module';
 import { TestDataSeedService } from 'db/seeds/test-data-seed';
 import { DataSource } from 'typeorm';
+import { makeRedisClient } from './utils/redis-mock';
+import Redis from 'ioredis';
+import { CacheService } from 'src/common/cache/cache.service';
+import { CacheKeysMap } from 'src/common/cache/keys';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
   let moduleFixture: TestingModule;
   let dataSource: DataSource;
+  let redisClient: Redis;
+  let cacheService: CacheService;
 
   beforeAll(async () => {
     moduleFixture = await Test.createTestingModule({
@@ -31,13 +37,21 @@ describe('AppController (e2e)', () => {
     
     // Get DataSource after app initialization
     dataSource = moduleFixture.get<DataSource>(DataSource);
-
+    redisClient = moduleFixture.get<Redis>('REDIS_CLIENT');
+    cacheService = moduleFixture.get<CacheService>(CacheService);
+    await cacheService.delByPrefix(CacheKeysMap.GET_MOVIES);
+    await cacheService.delByPrefix(CacheKeysMap.GET_WATCH_LIST);
+    await cacheService.delByPrefix(CacheKeysMap.GET_GENRES);
     const seeder = new TestDataSeedService(dataSource);
     await seeder.seedAllTables();
   });
 
   afterAll(async () => {
     await app.close();
+    await cacheService.delByPrefix(CacheKeysMap.GET_MOVIES);
+    await cacheService.delByPrefix(CacheKeysMap.GET_WATCH_LIST);
+    await cacheService.delByPrefix(CacheKeysMap.GET_GENRES);
+    await redisClient.quit();
   });
 
   it('/ (GET)', () => {
@@ -47,13 +61,31 @@ describe('AppController (e2e)', () => {
       .expect('Hello World!');
   });
 
+  describe('cacheService', () => {
+    it('should cache movies', async () => {
+      const q1 = { page: 1, limit: 10, search: 'test' };
+      const q2 = { page: 1, limit: 10, search: 'test2' };
+      await cacheService.set(CacheKeysMap.GET_MOVIES, q1, { data: [{ id: 1, name: 'test' }] }, 60 * 5);
+      await cacheService.set(CacheKeysMap.GET_MOVIES, q2, { data: [{ id: 1, name: 'test2' }] }, 60 * 5);
+      const cachedMovies = await cacheService.get(CacheKeysMap.GET_MOVIES, q1);
+      expect(cachedMovies).toBeDefined();
+      expect(JSON.parse(cachedMovies as string).data).toHaveLength(1);
+      expect(JSON.parse(cachedMovies as string).data[0].name).toBe('test');
+      await cacheService.delByPrefix(CacheKeysMap.GET_MOVIES);
+      const cachedMovies2 = await cacheService.get(CacheKeysMap.GET_MOVIES, { page: 1, limit: 10, search: 'test' });
+      expect(cachedMovies2).toBeNull();
+      const cachedMovies3 = await cacheService.get(CacheKeysMap.GET_MOVIES, q2);
+      expect(cachedMovies3).toBeNull();
+    });
+  })
+
   describe('genres', () => {
     let GLOBAL_PATH = '/genres';
     it('should return all genres', async () => {
       const PAGE_SIZE = 10;
       const res = await request(app.getHttpServer())
         .get(`${GLOBAL_PATH}?page=1&limit=${PAGE_SIZE}`)
-        .expect(200);      
+        .expect(200);
       expect(Array.isArray(res.body.data)).toBe(true);
       expect(res.body.data.length).toBeGreaterThan(0);
       expect(res.body.data.length).toBe(PAGE_SIZE);
