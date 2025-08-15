@@ -10,6 +10,7 @@ process.env.DATABASE_PORT = '5433';
 process.env.DATABASE_USER = 'tmdb_user_test';
 process.env.DATABASE_PASSWORD = 'tmdb_password_test';
 process.env.DATABASE_NAME = 'tmdb_db_test';
+process.env.REDIS_URL = 'redis://:tmdb_db_cache_pass@localhost:6379';
 
 // Increase test timeout for e2e tests
 jest.setTimeout(30000); 

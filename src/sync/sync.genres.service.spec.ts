@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { SyncGenresService } from './sync.genres.service';
 import { Genre } from '../genres/genre.entity';
 import { TmdbGenresApi } from '../tmdb/resources/genres.api';
+import { CacheService } from 'src/common/cache/cache.service';
+import { mockedCacheService } from 'test/utils/redis-mock';
 
 function createRepoMock() {
   return {
@@ -28,6 +30,10 @@ describe('SyncGenresService', () => {
         SyncGenresService,
         { provide: TmdbGenresApi, useValue: tmdb },
         { provide: getRepositoryToken(Genre), useValue: genresRepo },
+        {
+          provide: CacheService,
+          useValue: mockedCacheService,
+        }
       ],
     }).compile();
 

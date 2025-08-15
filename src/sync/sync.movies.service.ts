@@ -6,11 +6,14 @@ import { Genre } from '../genres/genre.entity';
 import { MovieGenre } from '../movies/MovieGenre.entity';
 import { TmdbMoviesApi } from '../tmdb/resources/movies.api';
 import { toMovieEntity } from '../tmdb/tmdb.mapper';
+import { CacheService } from 'src/common/cache/cache.service';
+import { CacheKeysMap } from 'src/common/cache/keys';
 
 @Injectable()
 export class SyncMoviesService {
   constructor(
     @Inject(TmdbMoviesApi) private readonly tmdbMovies: TmdbMoviesApi,
+    @Inject(CacheService) private readonly cacheService: CacheService,
     @InjectRepository(Movie) private readonly movieRepo: Repository<Movie>,
     @InjectRepository(Genre) private readonly genreRepo: Repository<Genre>,
     @InjectRepository(MovieGenre) private readonly movieGenreRepo: Repository<MovieGenre>,
@@ -78,6 +81,8 @@ export class SyncMoviesService {
       total += results.length;
       currentPage++;
     }
+    await this.cacheService.delByPrefix(CacheKeysMap.GET_MOVIES);
+    await this.cacheService.delByPrefix(CacheKeysMap.GET_WATCH_LIST);
     return total;
   }
 }

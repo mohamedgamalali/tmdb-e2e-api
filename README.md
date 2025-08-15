@@ -1,99 +1,154 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# TMDB E2E Project
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A NestJS application that integrates with The Movie Database (TMDB) API to sync and manage movie and genre data with comprehensive testing coverage.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🚀 Quick Start
 
-## Description
+### Prerequisites
+- Docker and Docker Compose
+- Node.js 18+ and Yarn
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### How to run the project
 
-## Project setup
+1. **Copy environment configuration:**
+   ```bash
+   cp env.development .env
+   ```
 
-```bash
-$ yarn install
-```
+2. **Start the application:**
+   ```bash
+   docker-compose up -d
+   ```
 
-## Compile and run the project
+3. **Access the API:**
+   - **API Endpoint:** http://localhost:8080
+   - **Database:** PostgreSQL on port 5432
+   - **Cache:** Redis on port 6379
+
+## 📊 Database Seeding
+
+### Seed from TMDB API
+To populate the database with initial data from TMDB:
 
 ```bash
-# development
-$ yarn run start
+# From inside the docker container
+docker exec -it tmdb-e2e-app yarn seed
 
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+# Or run directly if you have the environment set up locally
+yarn seed
 ```
 
-## Run tests
+The seed script will:
+- Connect to the TMDB API using your configured API key
+- Sync genres and movies data
+- Populate the database with initial content
+- Use the sync module services for data consistency
 
+## 🧪 Testing
+
+### Unit Tests
 ```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+yarn test
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+### E2E Tests
 ```bash
-$ yarn install -g mau
-$ mau deploy
+yarn test:e2e
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### Test Coverage
+```bash
+yarn test:cov
+```
 
-## Resources
+### Watch Mode
+```bash
+yarn test:watch
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+## 🏗️ Project Structure
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```
+src/
+├── common/          # Shared utilities, middleware, cache
+├── config/          # Configuration and validation
+├── genres/          # Genre management
+├── movies/          # Movie management
+├── sync/            # TMDB data synchronization
+└── tmdb/            # TMDB API client
+```
 
-## Support
+## 🔄 Sync Module
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+The sync module (`src/sync/`) handles data synchronization between TMDB API and your local database:
 
-## Stay in touch
+- **SyncGenresService**: Manages genre synchronization
+- **SyncMoviesService**: Handles movie data sync
+- **Cache Integration**: Uses Redis for performance optimization
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## 📋 Next Steps
 
-## License
+### 1. Implement Background Cron Job
+Set up a scheduled job to automatically sync data from TMDB:
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+```typescript
+// Example cron job implementation
+@Cron('0 */6 * * *') // Every 6 hours
+async handleCron() {
+  await this.syncGenresService.syncGenres();
+  await this.syncMoviesService.syncMovies();
+}
+```
+
+## 🔧 Development
+
+### Available Scripts
+```bash
+yarn start          # Start in production mode
+yarn start:dev      # Start in development mode with watch
+yarn start:debug    # Start with debug enabled
+yarn build          # Build the application
+yarn lint           # Run ESLint
+yarn format         # Format code with Prettier
+```
+
+### Environment Variables
+Key configuration options in `.env`:
+- `TMDB_API_KEY`: Your TMDB API key
+- `DATABASE_*`: PostgreSQL connection settings
+- `REDIS_URL`: Redis connection string
+- `LOG_LEVEL`: Application logging level
+
+## 🐳 Docker Services
+
+The application runs with these services:
+- **App**: NestJS application (port 8080)
+- **PostgreSQL**: Main database (port 5432)
+- **PostgreSQL Test**: Test database (port 5433)
+- **Redis**: Cache layer (port 6379)
+
+## 📚 API Documentation
+
+Once the application is running, you can access:
+- **Swagger UI**: http://localhost:8080/api (if configured)
+- **Health Check**: http://localhost:8080/health (if implemented)
+
+## 🚨 Troubleshooting
+
+### Common Issues
+1. **Port conflicts**: Ensure ports 8080, 5432, 6379 are available
+2. **Database connection**: Check PostgreSQL health check in docker-compose
+3. **API key**: Verify TMDB_API_KEY is set in your .env file
+4. **Cache issues**: Ensure Redis is running and accessible
+
+### Logs
+```bash
+# View application logs
+docker logs tmdb-e2e-app
+
+# View database logs
+docker logs tmdb-postgres
+
+# View cache logs
+docker logs cache
+```

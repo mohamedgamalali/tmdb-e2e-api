@@ -21,6 +21,7 @@
     "seed": "ts-node -r tsconfig-paths/register scripts/seed.ts"
   },
   "dependencies": {
+    "@nestjs/cache-manager": "^3.0.1",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
@@ -28,8 +29,11 @@
     "@nestjs/swagger": "^11.2.0",
     "@nestjs/typeorm": "^11.0.0",
     "axios": "^1.11.0",
+    "cache-manager": "^7.1.1",
+    "cache-manager-redis-store": "^3.0.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
+    "ioredis": "^5.7.0",
     "joi": "^18.0.0",
     "lodash": "^4.17.21",
     "pg": "^8.16.3",
@@ -83,7 +87,8 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
     "moduleNameMapper": {
-      "^src/(.*)$": "<rootDir>/$1"
+      "^src/(.*)$": "<rootDir>/$1",
+      "^test/(.*)$": "<rootDir>../test/$1"
     }
   }
 }

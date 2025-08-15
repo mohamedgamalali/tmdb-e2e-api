@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GenresController } from './genres.controller';
 import { GenresService } from './genres.service';
+import { CacheService } from 'src/common/cache/cache.service';
+import { mockedCacheService } from 'test/utils/redis-mock';
 
 describe('GenresController', () => {
   let controller: GenresController;
@@ -18,6 +20,10 @@ describe('GenresController', () => {
           provide: GenresService,
           useValue: mockGenresService,
         },
+        {
+          provide: CacheService,
+          useValue: mockedCacheService,
+        }
       ],
     }).compile();
 

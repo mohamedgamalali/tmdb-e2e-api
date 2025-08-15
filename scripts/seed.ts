@@ -8,6 +8,8 @@ import { DataSeedService } from '../db/seeds/data-seed';
 import { TmdbModule } from '../src/tmdb/tmdb.module';
 import { SyncMoviesService } from 'src/sync/sync.movies.service';
 import { SyncModule } from 'src/sync/sync.module';
+import { CacheService } from 'src/common/cache/cache.service';
+import { AppCacheModule } from 'src/common/cache/cache.module';
 
 @Module({
   imports: [
@@ -17,7 +19,8 @@ import { SyncModule } from 'src/sync/sync.module';
     }),
     TypeOrmModule.forRoot(dataSource.options),
     TmdbModule,
-    SyncModule
+    SyncModule,
+    AppCacheModule
   ],
   providers: [DataSeedService],
 })

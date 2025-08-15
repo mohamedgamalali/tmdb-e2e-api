@@ -17,6 +17,7 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
+  app.enableShutdownHooks();
   const config = new DocumentBuilder()
     .setTitle('TMDB API')
     .setDescription('TMDB API endpoints')

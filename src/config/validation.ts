@@ -7,4 +7,5 @@ export const ConfigValidationSchema = Joi.object({
   DATABASE_PASSWORD: Joi.string().required(),
   DATABASE_PORT: Joi.number().required(),
   TMDB_API_KEY: Joi.string().required(),
+  REDIS_URL: Joi.string().required(),
 });
