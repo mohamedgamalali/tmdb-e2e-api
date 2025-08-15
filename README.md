@@ -100,6 +100,12 @@ async handleCron() {
 }
 ```
 
+### 2. Code refactoring
+Move rating and watchlists to thier own module
+
+## 3. More unit tests
+We have very robust e2e tests, But Code coverage is not on the optimal level, need more unit tests.
+
 ## 🔧 Development
 
 ### Available Scripts
