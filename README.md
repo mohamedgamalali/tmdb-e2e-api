@@ -106,6 +106,9 @@ Move rating and watchlists to thier own module
 ## 3. More unit tests
 We have very robust e2e tests, But Code coverage is not on the optimal level, need more unit tests.
 
+## 4. Event driven DB cashing
+Rather then save cashing from API controllers we can apply db producer/consumer on reads/writes this way cashing will be handled in isolation from the DB layer it self, This solution will make sure the DB caching is scalable and reussable with all tables 
+
 ## 🔧 Development
 
 ### Available Scripts
